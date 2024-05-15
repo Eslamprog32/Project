@@ -84,33 +84,21 @@
             <artifactId>lombok-mapstruct-binding</artifactId>
             <version>${org.lombok.mapstruct.binding.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.example</groupId>
-            <artifactId>test</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <!--                added-->
-
         <!-- Spring Security -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity6</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.thymeleaf</groupId>
             <artifactId>thymeleaf-spring6</artifactId>
         </dependency>
-
         <!-- ./ Spring Security -->
-
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
