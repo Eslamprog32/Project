@@ -47,8 +47,8 @@ public class PatientController {
     }
 
     @GetMapping("/search_for_doctor")
-    public DoctorViewToPatientDTO searchForDoctor(@RequestParam String username) {
-        return patientService.searchForDoctor(username);
+    public DoctorViewToPatientDTO searchForDoctor(@RequestParam String doctorName) {
+        return patientService.searchForDoctor(doctorName);
     }
 
     @GetMapping("/get-all-doctors")
