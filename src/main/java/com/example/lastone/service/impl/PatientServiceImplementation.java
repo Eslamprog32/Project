@@ -56,7 +56,7 @@ public class PatientServiceImplementation implements PatientService {
     }
     @Override
     public List<PrescriptionDTOToViewAsList> getAllPrescriptionsV2(String username) {
-        return prescriptionRepo.findIdAndCreatedAtById(username);
+        return prescriptionRepo.findAllByPatientName2(username);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class PatientServiceImplementation implements PatientService {
         if (doctorRepo.existsByDoctorName(doctorName)) {
             Optional<DoctorPatientEntity> doctorPatient = doctorPatientRepo.
                     findByDoctorNameAndPatientName(doctorName, getPatientUserName());
-            if(!doctorPatient.isPresent()){
+            if(doctorPatient.isEmpty()){
                 DoctorPatientEntity doctorPatientEntity = new DoctorPatientEntity();
                 doctorPatientEntity.setPatientName(getPatientUserName());
                 doctorPatientEntity.setDoctorName(doctorName);
@@ -141,33 +141,30 @@ public class PatientServiceImplementation implements PatientService {
     }
     @Override
     public Boolean giveAccessXRayLaboratory(String xRayLaboratoryName) throws Exception {
-        /*
+
         if (xRayLaboratoryRepo.existsById(xRayLaboratoryName)) {
             Optional<XRayLaboratoryPatientEntity> xRayLaboratoryPatientEntity = xRayLaboratoryPatientRepo.
-                    findByPatientNameAndAndXRayLaboratoryName(getPatientUserName(),xRayLaboratoryName);
-            if(!xRayLaboratoryPatientEntity.isPresent()){
-                if(xRayLaboratoryPatientEntity.get().getAccess()){
-                    throw new Exception("Already have access!");
-                }
+                    findByLaboratoryNameAndPatientName(xRayLaboratoryName,getPatientUserName());
+            if(xRayLaboratoryPatientEntity.isEmpty()){
                 XRayLaboratoryPatientEntity xRayLaboratoryPatient = new XRayLaboratoryPatientEntity();
                 xRayLaboratoryPatient.setPatientName(getPatientUserName());
-                xRayLaboratoryPatient.setXRayLaboratoryName(xRayLaboratoryName);
+                xRayLaboratoryPatient.setLaboratoryName(xRayLaboratoryName);
                 xRayLaboratoryPatient.setAccess(false);
                 xRayLaboratoryPatientRepo.save(xRayLaboratoryPatient);
                 return true;
             }
+            if(xRayLaboratoryPatientEntity.get().getAccess()){
+                throw new Exception("Already have access!");
+            }
             throw new Exception("Already request access");
         }
         throw new Exception("No xRayLaboratory with this UserName");
-
-         */
-        return null;
     }
     @Override
     public Boolean acceptXRayLaboratoryAccess(String xRayLaboratoryName) throws Exception {
-        /*
+
         Optional<XRayLaboratoryPatientEntity> xRayLaboratoryPatientEntity = xRayLaboratoryPatientRepo.
-                findByPatientNameAndAndXRayLaboratoryName(getPatientUserName(),xRayLaboratoryName);
+                findByLaboratoryNameAndPatientName(xRayLaboratoryName,getPatientUserName());
         if (xRayLaboratoryPatientEntity.isPresent()) {
             if (!xRayLaboratoryPatientEntity.get().getAccess()) {
                 xRayLaboratoryPatientEntity.get().setAccess(true);
@@ -178,23 +175,19 @@ public class PatientServiceImplementation implements PatientService {
             }
         }
         throw new Exception("No Request to be accept");
-         */
-        return null;
     }
 
     @Override
     public Boolean removeXRayLaboratoryAccess(String xRayLaboratoryName) throws Exception {
-        /*
+
         Optional<XRayLaboratoryPatientEntity> xRayLaboratoryPatientEntity = xRayLaboratoryPatientRepo
-                .findByPatientNameAndAndXRayLaboratoryName(getPatientUserName(),xRayLaboratoryName);
+                .findByLaboratoryNameAndPatientName(xRayLaboratoryName,getPatientUserName());
         if (xRayLaboratoryPatientEntity.isPresent()) {
             xRayLaboratoryPatientRepo.deleteById(
                     xRayLaboratoryPatientEntity.get().getXRaysLaboratoryPatientsId());
             return true;
         }
         throw new Exception("Not Found!");
-         */
-        return null;
     }
     @Override
     public DoctorViewToPatientDTO searchForDoctor(String doctorName) {

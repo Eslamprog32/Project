@@ -93,7 +93,9 @@ public class UserServiceImplementation implements UserService {
                 }
                 role += "DOCTOR";
                 userEntity.get().setRole(role);
-                DoctorEntity doctor = new DoctorEntity(getUsername(),specialization);
+                DoctorEntity doctor = new DoctorEntity();
+                doctor.setDoctorName(user.getUsername());
+                doctor.setSpecialization(specialization);
                 doctorRepo.save(doctor);
                 userRepo.save(user);
                 return true;

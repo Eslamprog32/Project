@@ -15,5 +15,5 @@ public interface PrescriptionRepo extends JpaRepository<PrescriptionEntity, Long
     Boolean existsByPatientNameAndId(String patientName, Long id);
     void deleteByPatientNameAndId(String patientName, Long id);
     @Query("SELECT p.id, p.createdAt FROM PrescriptionEntity p WHERE p.patientName = :patientName")
-    List<PrescriptionDTOToViewAsList> findIdAndCreatedAtById(String patientName);
+    List<PrescriptionDTOToViewAsList> findAllByPatientName2(String patientName);
 }

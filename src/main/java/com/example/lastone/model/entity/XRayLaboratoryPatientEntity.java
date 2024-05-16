@@ -24,7 +24,7 @@ public class XRayLaboratoryPatientEntity {
     private String patientName;
 
     @Column(name = "x_ray_laboratory_name")
-    private String xRayLaboratoryName;
+    private String laboratoryName;
 
     private Boolean access;
 

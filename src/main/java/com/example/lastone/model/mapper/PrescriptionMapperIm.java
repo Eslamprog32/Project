@@ -49,4 +49,7 @@ public class PrescriptionMapperIm {
                 , testsInPrescriptionDTOList, prescriptionEntity.getNote(),
                 prescriptionEntity.getDiagnosis(), prescriptionEntity.getCreatedAt());
     }
+    XRayInPrescriptionDTO toXRayInPrescriptionDto(XRayInPrescriptionEntity xRayInPrescription){
+        return null;
+    }
 }

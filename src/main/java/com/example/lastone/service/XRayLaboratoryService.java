@@ -11,5 +11,6 @@ public interface XRayLaboratoryService {
 
     Boolean getAccess(String xRayLaboratoryName, String patientName) throws Exception;
 
-    List<PrescriptionViewDTO> getAllPrescriptionTOMyPatient(String patientName) throws Exception;
+
+    List<PrescriptionViewDTO> getAllPrescriptionTOMyPatient(String xRayLaboratoryName, String patientName) throws Exception;
 }
