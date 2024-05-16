@@ -2,6 +2,7 @@ package com.example.lastone.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,10 +33,10 @@ public class UserEntity {
 
     @Column(name = "password")
     private String password;
-
     @Column(name = "phone", unique = true)
     private String phone;
 
+    @Email
     @Column(name = "email", unique = true)
     private String email;
     @Column(name = "gender")

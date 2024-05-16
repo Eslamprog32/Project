@@ -1,7 +1,9 @@
 package com.example.lastone.service.impl;
 
 import com.example.lastone.model.dto.AddOrganizationProfileDTO;
+import com.example.lastone.model.dto.UserDTO;
 import com.example.lastone.model.dto.UserRegisterDTO;
+import com.example.lastone.model.dto.ViewOrganizationDTO;
 import com.example.lastone.model.entity.*;
 import com.example.lastone.model.mapper.OrganizationMapper;
 import com.example.lastone.model.mapper.UserMapper;
@@ -12,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +34,30 @@ public class UserServiceImplementation implements UserService {
     public String getUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
+    }
+
+    @Override
+    public boolean havePatientProfile() {
+        return patientRepo.existsById(getUsername());
+    }
+
+    @Override
+    public UserDTO getListOfProfiles() {
+        UserDTO userDTO = new UserDTO();
+        userDTO.setPatient(havePatientProfile());
+        userDTO.setDoctor(haveDoctorProfile());
+        userDTO.setOrganizationDTOList(new ArrayList<>());
+        List<WorksInEntity> organizations = worksInRepo.findAllByUsername(getUsername());
+        for (WorksInEntity organization : organizations) {
+            userDTO.getOrganizationDTOList().add(new ViewOrganizationDTO(organization.getOrganizationName(),
+                    organization.getType()));
+        }
+        return userDTO;
+    }
+
+    @Override
+    public boolean haveDoctorProfile() {
+        return doctorRepo.existsById(getUsername());
     }
 
     @Override
@@ -116,6 +143,7 @@ public class UserServiceImplementation implements UserService {
         xRayLaboratoryRepo.save(xRayLaboratory);
         WorksInEntity works = new WorksInEntity();
         works.setUsername(getUsername());
+        works.setType("X-Ray");
         works.setOrganizationName(organization.getOrganizationName());
         worksInRepo.save(works);
         return true;

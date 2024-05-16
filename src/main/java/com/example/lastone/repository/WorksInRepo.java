@@ -3,5 +3,8 @@ package com.example.lastone.repository;
 import com.example.lastone.model.entity.WorksInEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WorksInRepo extends JpaRepository<WorksInEntity, Integer> {
+import java.util.List;
+
+public interface WorksInRepo extends JpaRepository<WorksInEntity, Long> {
+    List<WorksInEntity> findAllByUsername(String username);
 }

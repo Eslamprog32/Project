@@ -3,6 +3,7 @@ package com.example.lastone.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,15 +18,17 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class OrganizationEntity  {
+public class OrganizationEntity {
 
     @Id
     @Column(name = "organization_name")
     private String organizationName;
 
+    @Email
     private String email;
 
     private String location;
+    private String phone;
 
     @JsonManagedReference
     @OneToOne(mappedBy = "organizationEntity")

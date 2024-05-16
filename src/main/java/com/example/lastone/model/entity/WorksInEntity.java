@@ -24,19 +24,19 @@ public class WorksInEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "work_id")
-    private Integer workId;
+    private Long workId;
     @Column(name = "user_name")
     private String username;
     @Column(name = "organization_name")
     private String organizationName;
-
+    private String type;
     @CreationTimestamp
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "user_name",insertable = false,updatable = false)
+    @JoinColumn(name = "user_name", insertable = false, updatable = false)
     private UserEntity userEntity;
 
     @JsonBackReference

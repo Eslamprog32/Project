@@ -1,6 +1,7 @@
 package com.example.lastone.controller;
 
 import com.example.lastone.model.dto.AddOrganizationProfileDTO;
+import com.example.lastone.model.dto.UserDTO;
 import com.example.lastone.model.dto.UserRegisterDTO;
 import com.example.lastone.model.entity.DoctorEntity;
 import com.example.lastone.model.entity.PatientEntity;
@@ -25,6 +26,7 @@ public class UserController {
         return userService.userRegister(userRegisterDTO);
     }
 
+
     @GetMapping("/get")
     public List<UserEntity> get() {
         return userService.get();
@@ -35,17 +37,32 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }
+    @GetMapping("/auth/get-list-of-profiles")
+    public UserDTO getListOfProfiles(){
+        return userService.getListOfProfiles();
+    }
 
-    @PostMapping("/add-patient-profile")
+    @GetMapping("/auth/have-patient-profile")
+    public boolean havePatientProfile() {
+        return userService.havePatientProfile();
+    }
+
+    @GetMapping("/auth/have-doctor-profile")
+    public boolean haveDoctorProfile() {
+        return userService.haveDoctorProfile();
+    }
+
+    @PostMapping("/auth/add-patient-profile")
     public boolean addPatientProfile() {
         return userService.addPatientProfile();
     }
 
-    @PostMapping("/add-doctor-profile")
+    @PostMapping("/auth/add-doctor-profile")
     public boolean addDoctorProfile(@RequestParam String specialization) {
         return userService.addDoctorProfile(specialization);
     }
-    @PostMapping("/add-xray-laboratory-profile")
+
+    @PostMapping("/auth/add-xray-laboratory-profile")
     public boolean addXRayLaboratoryProfile(@RequestBody AddOrganizationProfileDTO organizationProfileDTO) {
         return userService.addXRayLaboratoryProfile(organizationProfileDTO);
     }
