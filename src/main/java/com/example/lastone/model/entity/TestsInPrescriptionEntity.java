@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @Builder
 @Entity
-@Table(name = "tests_in_prescription")
+@Table(name = "Tests_in_prescription")
 @AllArgsConstructor
 @NoArgsConstructor
 public class TestsInPrescriptionEntity {
