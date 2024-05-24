@@ -9,6 +9,7 @@ import com.example.lastone.model.entity.UserEntity;
 import com.example.lastone.service.UserService;
 import com.example.lastone.service.impl.UserServiceImplementation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -53,8 +54,8 @@ public class UserController {
     }
 
     @PostMapping("/auth/add-patient-profile")
-    public boolean addPatientProfile() {
-        return userService.addPatientProfile();
+    public ResponseEntity<Boolean> addPatientProfile() {
+        return ResponseEntity.ok(userService.addPatientProfile());
     }
 
     @PostMapping("/auth/add-doctor-profile")

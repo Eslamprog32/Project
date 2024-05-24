@@ -1,45 +1,55 @@
 package com.example.lastone.config;
 
+import com.example.lastone.filter.JwtAuthenticationFilter;
+import com.example.lastone.service.impl.UserDetailsServiceImp;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.config.Customizer;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.stereotype.Component;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@Component
+@Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+    private final UserDetailsServiceImp userDetailsServiceImp;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-
-        http.authorizeHttpRequests(authRequest -> {
-            /*
-            authRequest.requestMatchers("users/add-patient-profile", "users/add-doctor-profile", "users/get", "users/username" ,
-                    "users/add-xray-laboratory-profile").authenticated();
-
-             */
-            authRequest.requestMatchers("users/auth/**").authenticated();
-            authRequest.requestMatchers("users/Register/**").permitAll();
-            authRequest.requestMatchers("doctors/**").hasRole("DOCTOR");
-            authRequest.requestMatchers("patients/**").hasRole("PATIENT");
-        });
-        http.cors(AbstractHttpConfigurer::disable);
-        http.csrf(AbstractHttpConfigurer::disable);
-        http.headers(AbstractHttpConfigurer::disable);
-        http.formLogin(Customizer.withDefaults());
-        http.httpBasic(Customizer.withDefaults());
-        return http.build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(
+                AbstractHttpConfigurer::disable
+        ).authorizeHttpRequests(
+                req -> req.requestMatchers("/login/**", "/register/**").
+                        permitAll()
+                        .requestMatchers("/users/auth/**").authenticated()
+                        .requestMatchers("/doctors/**").hasAuthority("DOCTOR")
+                        .requestMatchers("/patients/**").hasAuthority("PATIENT")
+                        .anyRequest().authenticated()
+        ).userDetailsService(userDetailsServiceImp)
+                .sessionManagement(session -> session.sessionCreationPolicy(
+                        SessionCreationPolicy.STATELESS
+                )).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class).
+                build();
     }
 
     @Bean
-    PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
+    }
 
 }
-
