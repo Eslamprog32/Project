@@ -9,6 +9,7 @@ import com.example.lastone.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,8 +30,8 @@ public class PatientServiceImplementation implements PatientService {
     private final XRayLaboratoryPatientRepo xRayLaboratoryPatientRepo;
 
     public String getPatientUserName() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName();
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userDetails.getUsername();
     }
 
     @Override
@@ -54,6 +55,7 @@ public class PatientServiceImplementation implements PatientService {
         }
         return prescriptionViewDTOList;
     }
+
     @Override
     public List<PrescriptionDTOToViewAsList> getAllPrescriptionsV2(String username) {
         return prescriptionRepo.findAllByPatientName2(username);
@@ -124,7 +126,7 @@ public class PatientServiceImplementation implements PatientService {
         if (doctorRepo.existsByDoctorName(doctorName)) {
             Optional<DoctorPatientEntity> doctorPatient = doctorPatientRepo.
                     findByDoctorNameAndPatientName(doctorName, getPatientUserName());
-            if(doctorPatient.isEmpty()){
+            if (doctorPatient.isEmpty()) {
                 DoctorPatientEntity doctorPatientEntity = new DoctorPatientEntity();
                 doctorPatientEntity.setPatientName(getPatientUserName());
                 doctorPatientEntity.setDoctorName(doctorName);
@@ -132,20 +134,21 @@ public class PatientServiceImplementation implements PatientService {
                 doctorPatientRepo.save(doctorPatientEntity);
                 return true;
             }
-            if(doctorPatient.get().getAccess()){
+            if (doctorPatient.get().getAccess()) {
                 throw new Exception("Already have access!");
             }
             throw new Exception("Already request access");
         }
         throw new Exception("No doctor with this UserName");
     }
+
     @Override
     public Boolean giveAccessXRayLaboratory(String xRayLaboratoryName) throws Exception {
 
         if (xRayLaboratoryRepo.existsById(xRayLaboratoryName)) {
             Optional<XRayLaboratoryPatientEntity> xRayLaboratoryPatientEntity = xRayLaboratoryPatientRepo.
-                    findByLaboratoryNameAndPatientName(xRayLaboratoryName,getPatientUserName());
-            if(xRayLaboratoryPatientEntity.isEmpty()){
+                    findByLaboratoryNameAndPatientName(xRayLaboratoryName, getPatientUserName());
+            if (xRayLaboratoryPatientEntity.isEmpty()) {
                 XRayLaboratoryPatientEntity xRayLaboratoryPatient = new XRayLaboratoryPatientEntity();
                 xRayLaboratoryPatient.setPatientName(getPatientUserName());
                 xRayLaboratoryPatient.setLaboratoryName(xRayLaboratoryName);
@@ -153,18 +156,19 @@ public class PatientServiceImplementation implements PatientService {
                 xRayLaboratoryPatientRepo.save(xRayLaboratoryPatient);
                 return true;
             }
-            if(xRayLaboratoryPatientEntity.get().getAccess()){
+            if (xRayLaboratoryPatientEntity.get().getAccess()) {
                 throw new Exception("Already have access!");
             }
             throw new Exception("Already request access");
         }
         throw new Exception("No xRayLaboratory with this UserName");
     }
+
     @Override
     public Boolean acceptXRayLaboratoryAccess(String xRayLaboratoryName) throws Exception {
 
         Optional<XRayLaboratoryPatientEntity> xRayLaboratoryPatientEntity = xRayLaboratoryPatientRepo.
-                findByLaboratoryNameAndPatientName(xRayLaboratoryName,getPatientUserName());
+                findByLaboratoryNameAndPatientName(xRayLaboratoryName, getPatientUserName());
         if (xRayLaboratoryPatientEntity.isPresent()) {
             if (!xRayLaboratoryPatientEntity.get().getAccess()) {
                 xRayLaboratoryPatientEntity.get().setAccess(true);
@@ -181,7 +185,7 @@ public class PatientServiceImplementation implements PatientService {
     public Boolean removeXRayLaboratoryAccess(String xRayLaboratoryName) throws Exception {
 
         Optional<XRayLaboratoryPatientEntity> xRayLaboratoryPatientEntity = xRayLaboratoryPatientRepo
-                .findByLaboratoryNameAndPatientName(xRayLaboratoryName,getPatientUserName());
+                .findByLaboratoryNameAndPatientName(xRayLaboratoryName, getPatientUserName());
         if (xRayLaboratoryPatientEntity.isPresent()) {
             xRayLaboratoryPatientRepo.deleteById(
                     xRayLaboratoryPatientEntity.get().getXRaysLaboratoryPatientsId());
@@ -189,6 +193,7 @@ public class PatientServiceImplementation implements PatientService {
         }
         throw new Exception("Not Found!");
     }
+
     @Override
     public DoctorViewToPatientDTO searchForDoctor(String doctorName) {
         Optional<DoctorEntity> doctorEntity = doctorRepo.findById(doctorName);

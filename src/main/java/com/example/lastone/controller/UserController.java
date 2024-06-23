@@ -12,13 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/users/auth")
 public class UserController {
     private final UserService userService;
 
@@ -26,44 +27,37 @@ public class UserController {
     public boolean userRegister(@RequestBody UserRegisterDTO userRegisterDTO) throws Exception {
         return userService.userRegister(userRegisterDTO);
     }
-
-
     @GetMapping("/get")
     public List<UserEntity> get() {
         return userService.get();
     }
 
-    @GetMapping("/username")
-    public String getUsername() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return authentication.getName();
-    }
-    @GetMapping("/auth/get-list-of-profiles")
+    @GetMapping("/get-list-of-profiles")
     public UserDTO getListOfProfiles(){
         return userService.getListOfProfiles();
     }
 
-    @GetMapping("/auth/have-patient-profile")
+    @GetMapping("/have-patient-profile")
     public boolean havePatientProfile() {
         return userService.havePatientProfile();
     }
 
-    @GetMapping("/auth/have-doctor-profile")
+    @GetMapping("/have-doctor-profile")
     public boolean haveDoctorProfile() {
         return userService.haveDoctorProfile();
     }
 
-    @PostMapping("/auth/add-patient-profile")
+    @PostMapping("/add-patient-profile")
     public ResponseEntity<Boolean> addPatientProfile() {
         return ResponseEntity.ok(userService.addPatientProfile());
     }
 
-    @PostMapping("/auth/add-doctor-profile")
+    @PostMapping("/add-doctor-profile")
     public boolean addDoctorProfile(@RequestParam String specialization) {
         return userService.addDoctorProfile(specialization);
     }
 
-    @PostMapping("/auth/add-xray-laboratory-profile")
+    @PostMapping("/add-xray-laboratory-profile")
     public boolean addXRayLaboratoryProfile(@RequestBody AddOrganizationProfileDTO organizationProfileDTO) {
         return userService.addXRayLaboratoryProfile(organizationProfileDTO);
     }
