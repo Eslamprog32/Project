@@ -24,14 +24,17 @@ public class DoctorPatientEntity {
     @Column(name = "doctor_name")
     private String doctorName;
 
+    private Integer whichRequestAccess;
+
     private Boolean access;
+
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_name", insertable = false, updatable = false)
     private PatientEntity patientEntity;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "doctor_name", insertable = false, updatable = false)
     private DoctorEntity doctor;
 

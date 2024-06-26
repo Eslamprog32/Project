@@ -20,37 +20,41 @@ public class PatientEntity {
     public PatientEntity(String patientName) {
         this.patientName = patientName;
     }
+
     @Id
     @Column(name = "patient_name")
     private String patientName;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "patientEntity")
+    @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<XRayEntity> xRayEntities;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<TestsEntity> testsEntities;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "patientEntity")
+    @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PrescriptionEntity> prescriptionEntities;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "patientEntity")
+    @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DoctorPatientEntity> doctorPatientEntities;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "patientEntity")
-    private List<LabPatientEntity> labPatientEntities;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "patientEntity")
+    @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<XRayLaboratoryPatientEntity> xRayLaboratoryPatientEntities;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "patientEntity")
+    @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PharmacistPatientEntity> pharmacistPatientEntities;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "patientEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<TestsLabPatientEntity> testsLabPatientEntities;
+
     @JsonBackReference
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_name", insertable = false, updatable = false)
     private UserEntity userEntity;
 }

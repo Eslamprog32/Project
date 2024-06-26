@@ -23,11 +23,11 @@ public class XRayLaboratoryEntity {
     private String xRayLaboratoryName;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "xRayLaboratoryEntity")
+    @OneToMany(mappedBy = "xRayLaboratoryEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<XRayLaboratoryPatientEntity> xRayLaboratoryPatientEntities;
 
     @JsonBackReference
-    @OneToOne
+    @OneToOne( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "x_ray_laboratory_name", insertable = false, updatable = false)
     private OrganizationEntity organizationEntity;
 }

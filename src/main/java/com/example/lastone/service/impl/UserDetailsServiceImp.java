@@ -1,6 +1,7 @@
 package com.example.lastone.service.impl;
 
 
+import com.example.lastone.Exceptions.MessageError;
 import com.example.lastone.repository.UserRepo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,6 @@ public class UserDetailsServiceImp implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepo.findByUsername
-                (username).orElseThrow(()->new UsernameNotFoundException("user not found"));
+                (username).orElseThrow(() -> new MessageError("user not found"));
     }
 }

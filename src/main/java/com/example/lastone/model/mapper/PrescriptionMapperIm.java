@@ -3,13 +3,12 @@ package com.example.lastone.model.mapper;
 import com.example.lastone.model.dto.*;
 import com.example.lastone.model.entity.MedicineInPrescriptionEntity;
 import com.example.lastone.model.entity.PrescriptionEntity;
-import com.example.lastone.model.entity.TestsInPrescriptionEntity;
+import com.example.lastone.model.entity.TestsPrescriptionEntity;
 import com.example.lastone.model.entity.XRayInPrescriptionEntity;
 import com.example.lastone.repository.MedicineInPrescriptionRepo;
 import com.example.lastone.repository.TestsInPrescriptionRepo;
 import com.example.lastone.repository.XRayInPrescriptionRepo;
 import lombok.RequiredArgsConstructor;
-import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -31,9 +30,9 @@ public class PrescriptionMapperIm {
         }
         List<TestsInPrescriptionDTO> testsInPrescriptionDTOList = new ArrayList<>();
 
-        List<TestsInPrescriptionEntity> tests =
+        List<TestsPrescriptionEntity> tests =
                 testsInPrescriptionRepo.findAllByPrescriptionId(prescriptionEntity.getId());
-        for (TestsInPrescriptionEntity testsInPrescriptionEntity : tests) {
+        for (TestsPrescriptionEntity testsInPrescriptionEntity : tests) {
             testsInPrescriptionDTOList.add(new TestsInPrescriptionDTO(testsInPrescriptionEntity.getTest(),
                     testsInPrescriptionEntity.getNote()));
         }
@@ -41,7 +40,7 @@ public class PrescriptionMapperIm {
         List<XRayInPrescriptionEntity> xRays =
                 xRayInPrescriptionRepo.findAllByPrescriptionId(prescriptionEntity.getId());
         for (XRayInPrescriptionEntity xRay : xRays) {
-            xRayInPrescriptionDTOList.add(new XRayInPrescriptionDTO(xRay.getXRay()));
+            xRayInPrescriptionDTOList.add(new XRayInPrescriptionDTO(xRay.getXRay(),xRay.getNote()));
         }
         return new PrescriptionViewDTO(prescriptionEntity.getId()
                 , prescriptionEntity.getPatientName(),
@@ -49,7 +48,16 @@ public class PrescriptionMapperIm {
                 , testsInPrescriptionDTOList, prescriptionEntity.getNote(),
                 prescriptionEntity.getDiagnosis(), prescriptionEntity.getCreatedAt());
     }
-    XRayInPrescriptionDTO toXRayInPrescriptionDto(XRayInPrescriptionEntity xRayInPrescription){
+
+    public PrescriptionDTOToViewAsList toPrescriptionDTOToViewAsList(PrescriptionEntity prescriptionEntity) {
+        PrescriptionDTOToViewAsList prescriptionDTOToViewAsList = new PrescriptionDTOToViewAsList();
+        prescriptionDTOToViewAsList.setPrescription_id(prescriptionEntity.getId());
+        prescriptionDTOToViewAsList.setCreated_at(prescriptionEntity.getCreatedAt());
+        prescriptionDTOToViewAsList.setDoctorName(prescriptionEntity.getDoctorName());
+        return prescriptionDTOToViewAsList;
+    }
+
+    XRayInPrescriptionDTO toXRayInPrescriptionDto(XRayInPrescriptionEntity xRayInPrescription) {
         return null;
     }
 }

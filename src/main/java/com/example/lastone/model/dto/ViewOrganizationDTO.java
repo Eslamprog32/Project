@@ -12,4 +12,5 @@ import lombok.NoArgsConstructor;
 public class ViewOrganizationDTO {
     String organizationName;
     String type;
+    Boolean admin;
 }

@@ -12,4 +12,6 @@ import lombok.NoArgsConstructor;
 public class XRayInPrescriptionDTO {
 
     private String xray;
+
+    private String note;
 }

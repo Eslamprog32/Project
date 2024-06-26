@@ -24,6 +24,7 @@ public class PrescriptionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "prescription_id")
     private Long id;
+
     @Column(name = "patient_name")
     private String patientName;
     @Column(name = "doctor_name")
@@ -37,20 +38,20 @@ public class PrescriptionEntity {
     private LocalDateTime createdAt;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_name", insertable = false, updatable = false)
     private PatientEntity patientEntity;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "prescriptionEntity")
+    @OneToMany(mappedBy = "prescriptionEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<MedicineInPrescriptionEntity> medicineEntities;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "prescriptionEntity")
+    @OneToMany(mappedBy = "prescriptionEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<XRayInPrescriptionEntity> xRayInPrescriptionEntities;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "prescriptionEntity")
-    private List<TestsInPrescriptionEntity> testsInPrescriptionEntities;
+    @OneToMany(mappedBy = "prescriptionEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<TestsPrescriptionEntity> testsInPrescriptionEntities;
 
 }

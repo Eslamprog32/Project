@@ -28,13 +28,14 @@ public class XRayLaboratoryPatientEntity {
 
     private Boolean access;
 
+    private Boolean whichRequestAccess;
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_name", insertable = false, updatable = false)
     private PatientEntity patientEntity;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "x_ray_laboratory_name", insertable = false, updatable = false)
     private XRayLaboratoryEntity xRayLaboratoryEntity;
 

@@ -1,5 +1,6 @@
 package com.example.lastone.model.entity;
 
+import com.example.lastone.Exceptions.MessageError;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -13,6 +14,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -26,25 +28,26 @@ import java.util.*;
 public class UserEntity implements UserDetails {
 
     @Id
-    @Column(name = "user_name", unique = true)
+    @Column(name = "user_name")
     private String username;
-    @Column(name = "ssn", unique = true)
+    @Column(name = "ssn")
     private String SSN;
     @Column(name = "full_name")
     private String fullName;
 
     @Column(name = "password")
     private String password;
-    @Column(name = "phone", unique = true)
+    @Column(name = "phone")
     private String phone;
-
+    private Boolean verified;
     @Email
-    @Column(name = "email", unique = true)
+    @Column(name = "email")
     private String email;
     @Column(name = "gender")
     private String gender;
+
     @Column(name = "date_of_birth")
-    private String dateOfBirth;
+    private LocalDate dateOfBirth;
 
     @Column(name = "address")
     private String address;
@@ -52,8 +55,9 @@ public class UserEntity implements UserDetails {
     @Column(name = "martal_status")
     private String martalStatus;
 
-    @Column(name = "profile_picture")
-    private String profilePicture;
+    @Lob
+    @Column(name = "profile_picture", length = 64 * 1024)
+    private byte[] profilePic;
 
     @Column(name = "role")
     private String role;
@@ -71,22 +75,26 @@ public class UserEntity implements UserDetails {
 
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "userEntity")
+    @OneToOne(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private PatientEntity patientEntity;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "userEntity")
+    @OneToOne(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private DoctorEntity doctor;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "userEntity")
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<WorksInEntity> organization;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "userEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PostersLikesEntity> postersLikesEntities;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         String role[] = getRole().split(", ");
         List<GrantedAuthority> roles = new ArrayList<>();
-        if(!getRole().equals("")) {
+        if (!getRole().equals("")) {
             for (String userRole : role) {
                 roles.add(new SimpleGrantedAuthority(userRole));
             }
@@ -111,6 +119,9 @@ public class UserEntity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+        if (verified == null || !verified) {
+            throw new MessageError("Your Account Needed To be Verified!");
+        }
         return true;
     }
 }

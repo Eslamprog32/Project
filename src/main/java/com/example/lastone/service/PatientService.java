@@ -1,8 +1,6 @@
 package com.example.lastone.service;
 
-import com.example.lastone.model.dto.DoctorViewToPatientDTO;
-import com.example.lastone.model.dto.PrescriptionDTOToViewAsList;
-import com.example.lastone.model.dto.PrescriptionViewDTO;
+import com.example.lastone.model.dto.*;
 
 import java.util.List;
 
@@ -17,21 +15,38 @@ public interface PatientService {
     Boolean haveAccess(String patientName, String doctorName);
 
 
-    Boolean acceptDoctorAccess(String doctorName) throws Exception;
+    String acceptDoctorAccess(String doctorName) throws Exception;
 
-    Boolean acceptXRayLaboratoryAccess(String doctorName) throws Exception;
+    String giveAccessTestsLaboratory(String laboratoryName) throws Exception;
 
-    Boolean removeDoctorAccess(String doctorName) throws Exception;
+    String acceptXRayLaboratoryAccess(String xRayLaboratoryName) throws Exception;
 
-    Boolean giveAccessToDoctor(String doctorName) throws Exception;
+    String removeDoctorAccess(String doctorName) throws Exception;
 
-    Boolean giveAccessXRayLaboratory(String doctorName) throws Exception;
+    String giveAccessToDoctor(String doctorName) throws Exception;
 
-    Boolean removeXRayLaboratoryAccess(String doctorName) throws Exception;
+    List<ConnectionsListDTO> getListOfConnections();
 
-    DoctorViewToPatientDTO searchForDoctor(String doctorName);
+    String removePharmacyAccess(String pharmacistName) throws Exception;
 
-    List<DoctorViewToPatientDTO> getAllDoctors(String patientName);
+    String giveAccessXRayLaboratory(String xRayLaboratoryName) throws Exception;
 
-    List<PrescriptionViewDTO> getAllPrescriptions(String username);
+    String giveAccessPharmacy(String pharmacistName) throws Exception;
+
+    String acceptPharmacyAccess(String pharmacistName) throws Exception;
+
+    String removeXRayLaboratoryAccess(String xRayLaboratoryName) throws Exception;
+
+
+    String acceptTestsLabAccess(String laboratoryName) throws Exception;
+
+    String removeTestsLabAccess(String laboratoryName) throws Exception;
+
+    List<ResponseAsListDTO> getListOfXRay();
+
+    List<ResponseAsListDTO> getListOfTests();
+
+    TestsResultDTO getTestDetails(Long ID);
+
+    byte[] getXRayPicture(Long id);
 }

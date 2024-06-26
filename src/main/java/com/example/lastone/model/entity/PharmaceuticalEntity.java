@@ -28,7 +28,7 @@ public class PharmaceuticalEntity {
     private String pharmacistName;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "pharmacist_name", insertable = false, updatable = false)
     private PharmacistEntity pharmacistEntity;
 }

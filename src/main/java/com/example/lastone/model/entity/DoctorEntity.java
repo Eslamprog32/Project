@@ -3,6 +3,7 @@ package com.example.lastone.model.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,17 +25,16 @@ public class DoctorEntity {
     private String doctorName;
 
     @Column(name = "specialization")
+    @NotNull
     private String specialization;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "doctor")
+    @OneToMany(mappedBy = "doctor", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<DoctorPatientEntity> doctorPatientEntities;
 
     @JsonBackReference
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "doctor_name", insertable = false, updatable = false)
     private UserEntity userEntity;
 
-    public DoctorEntity(String username, String specialization) {
-    }
 }

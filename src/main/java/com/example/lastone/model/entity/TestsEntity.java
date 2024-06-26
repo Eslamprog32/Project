@@ -6,18 +6,34 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 @Entity
-@Table(name = "tests_in_prescription")
+@Table(name = "tests")
 @AllArgsConstructor
 @NoArgsConstructor
 public class TestsEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ID;
     @Column(name = "patient_name")
     private String patientName;
-    private String test;
-    private String note;
+    private String description;
+    private String value;
+    private String unites;
+    private String category;
+    private Boolean is_abnormal;
+    private String code;
+    @CreationTimestamp
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_name", insertable = false, updatable = false)
+    private PatientEntity patientEntity;
 }

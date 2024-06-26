@@ -29,18 +29,21 @@ public class WorksInEntity {
     private String username;
     @Column(name = "organization_name")
     private String organizationName;
+
+    Boolean admin;
+
     private String type;
     @CreationTimestamp
     @Column(name = "start_date")
     private LocalDateTime startDate;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_name", insertable = false, updatable = false)
     private UserEntity userEntity;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "organization_name", insertable = false, updatable = false)
     private OrganizationEntity organizationEntity;
 

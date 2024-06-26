@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -14,7 +16,10 @@ public class PatientViewToDoctorDTO {
     private String fullName;
     private String phone;
     private String gender;
-    private String dateOfBirth;
+    private String SSN;
+    private LocalDate dateOfBirth;
     private String martalStatus;
-    private String profilePicture;
+    private String address;
+    private Integer age;
+
 }

@@ -1,21 +1,26 @@
 package com.example.lastone.service;
 
-import com.example.lastone.model.dto.AddOrganizationProfileDTO;
-import com.example.lastone.model.dto.UserDTO;
-import com.example.lastone.model.dto.UserRegisterDTO;
+import com.example.lastone.model.dto.*;
 import com.example.lastone.model.entity.UserEntity;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 
 public interface UserService {
-    public boolean userRegister(UserRegisterDTO userRegisterDTO) throws Exception;
 
-    public boolean addPatientProfile();
+    GeneralInfoOfUserDTO getGeneralInfoOfUser();
 
-    public boolean addDoctorProfile(String specialization);
+    String addPatientProfile();
 
-    public boolean addXRayLaboratoryProfile(AddOrganizationProfileDTO organizationProfileDTO);
+    ResponseEntity<?> modifyUserData(UserModifyDTO userModifyDTO);
+
+
+    String addDoctorProfile(DoctorDto dto);
+
+    String addXRayLaboratoryProfile(OrganizationProfileDTO organizationProfileDTO);
 
     boolean havePatientProfile();
 
@@ -23,5 +28,15 @@ public interface UserService {
 
     boolean haveDoctorProfile();
 
-    public List<UserEntity> get();
+    List<UserEntity> get();
+
+    String addPharmacyProfile(OrganizationProfileDTO organizationProfileDTO);
+
+    String addTestLabProfile(OrganizationProfileDTO organizationProfileDTO);
+
+    String addProfilePicture(MultipartFile file) throws IOException;
+
+    byte[] getProfilePicture() throws IOException;
+
+    byte[] getPic(String username) throws IOException;
 }

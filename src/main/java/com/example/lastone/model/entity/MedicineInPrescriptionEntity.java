@@ -24,7 +24,7 @@ public class MedicineInPrescriptionEntity {
     private String note;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prescription_id", insertable = false, updatable = false)
     PrescriptionEntity prescriptionEntity;
 }

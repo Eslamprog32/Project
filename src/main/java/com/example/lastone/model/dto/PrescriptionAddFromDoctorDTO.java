@@ -14,7 +14,7 @@ import java.util.List;
 public class PrescriptionAddFromDoctorDTO {
     private String patientName;
     private List<MedicineDTO> medicines;
-    private List<XRayInPrescriptionDTO> xrayes;
+    private List<XRayInPrescriptionDTO> xr;
     private List<TestsInPrescriptionDTO> tests;
     private String note;
     private String diagnosis;

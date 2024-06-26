@@ -29,15 +29,18 @@ public class XRayEntity {
 
     @Column(name = "xRay_name")
     private String xRayName;
-    @Column(name = "picture")
-    private String picture;
 
+    @Lob
+    @Column(name = "picture", length = 64 * 1024)
+    private byte[] picture;
+
+    private String category;
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_name", insertable = false, updatable = false)
     private PatientEntity patientEntity;
 }

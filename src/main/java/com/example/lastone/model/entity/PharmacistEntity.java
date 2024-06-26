@@ -30,15 +30,15 @@ public class PharmacistEntity {
     private OrganizationEntity organizationEntity;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pharmacistEntity")
+    @OneToMany(mappedBy = "pharmacistEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PharmaceuticalEntity> pharmaceuticalEntities;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pharmacistEntity")
+    @OneToMany(mappedBy = "pharmacistEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<PharmacistPatientEntity> pharmacistPatientEntities;
 
     @JsonBackReference
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "pharmacist_name", insertable = false, updatable = false)
     private UserEntity userEntity;
 

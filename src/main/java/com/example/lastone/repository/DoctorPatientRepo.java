@@ -12,5 +12,6 @@ public interface DoctorPatientRepo extends JpaRepository<DoctorPatientEntity, Lo
     Optional<DoctorPatientEntity> findByDoctorNameAndPatientName(String doctorName, String patientName);
 
     List<DoctorPatientEntity> findAllByPatientName(String patientName);
+    List<DoctorPatientEntity> findAllByDoctorName(String doctorName);
     void deleteByDoctorNameAndPatientName(String doctorName, String patientName);
 }

@@ -17,11 +17,16 @@ public class XRayInPrescriptionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(name = "prescription_id")
     private Long prescriptionId;
+
     private String xRay;
+
+    private String note;
+
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "prescription_id", insertable = false, updatable = false)
     PrescriptionEntity prescriptionEntity;
 }

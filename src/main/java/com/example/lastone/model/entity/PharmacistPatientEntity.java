@@ -25,15 +25,15 @@ public class PharmacistPatientEntity {
 
     @Column(name = "pharmacist_name")
     private String pharmacistName;
-
-
+    private Boolean access;
+    private Boolean whichRequestAccess;
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "patient_name", insertable = false, updatable = false)
     private PatientEntity patientEntity;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "pharmacist_name", insertable = false, updatable = false)
     private PharmacistEntity pharmacistEntity;
 

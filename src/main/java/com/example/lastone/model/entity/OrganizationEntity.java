@@ -23,26 +23,27 @@ public class OrganizationEntity {
     @Id
     @Column(name = "organization_name")
     private String organizationName;
-
     @Email
     private String email;
-
     private String location;
     private String phone;
+    private String type;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "organizationEntity")
+    @OneToOne(mappedBy = "organizationEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private PharmacistEntity pharmacistEntity;
+    @Lob
+    @Column(name = "picture", length = 64 * 1024)
+    private byte[] picture;
+    @JsonManagedReference
+    @OneToOne(mappedBy = "organizationEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private TestsLabEntity testsLabEntity;
 
     @JsonManagedReference
-    @OneToOne(mappedBy = "organizationEntity")
-    private LaboratoryEntity laboratoryEntity;
-
-    @JsonManagedReference
-    @OneToOne(mappedBy = "organizationEntity")
+    @OneToOne(mappedBy = "organizationEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private XRayLaboratoryEntity xRayLaboratoryEntity;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "organizationEntity")
+    @OneToMany(mappedBy = "organizationEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<WorksInEntity> employees;
 }
