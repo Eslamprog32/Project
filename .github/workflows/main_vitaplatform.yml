@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.jar'
+          path: '${{ github.workspace }}/target/*.war'
 
   deploy:
     runs-on: windows-latest
@@ -48,9 +48,9 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v1
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_3274519A3B454B4C9B36FB33E33F919B }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_D2FCFAD4205C4EEBBBEA38D6195B7FA5 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_F40984E651684F1D9602F8F95A6C8440 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_4034DA8167AF445E836A1E2841F05433 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_6DD4D286997645D29F39C013C28DFA32 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_68C419B996D24055A9A0D11FF92C7438 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -58,5 +58,5 @@ jobs:
         with:
           app-name: 'vitaplatform'
           slot-name: 'Production'
-          package: '*.jar'
+          package: '*.war'
           
