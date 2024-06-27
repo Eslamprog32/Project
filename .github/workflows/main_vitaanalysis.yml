@@ -58,5 +58,5 @@ jobs:
         with:
           app-name: 'vitaanalysis'
           slot-name: 'Production'
-          package: '*.war'
+          package: '*.jar'
           
